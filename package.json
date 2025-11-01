@@ -1,0 +1,68 @@
+{
+    "name": "rotoscope-video-controller",
+    "version": "1.0.0",
+    "description": "Professional rotoscope video control system",
+    "main": "main.js",
+    "productName": "Rotoscope Video Controller",
+    "author": "Your Name",
+    "license": "MIT",
+    "scripts": {
+        "start": "electron .",
+        "rebuild": "electron-rebuild -f -w serialport",
+        "postinstall": "electron-rebuild",
+        "build": "electron-builder",
+        "build-win": "electron-builder --win",
+        "build-mac": "electron-builder --mac",
+        "build-linux": "electron-builder --linux",
+        "build-all": "electron-builder --win --mac --linux"
+    },
+    "dependencies": {
+        "express": "^5.1.0",
+        "qrcode": "^1.5.4",
+        "serialport": "^10.5.0"
+    },
+    "devDependencies": {
+        "electron": "^22.3.0",
+        "electron-builder": "^24.0.0",
+        "electron-rebuild": "^3.2.9"
+    },
+    "build": {
+        "appId": "com.yourcompany.rotoscope-video",
+        "productName": "Rotoscope Video Controller",
+        "directories": {
+            "output": "dist",
+            "buildResources": "build"
+        },
+        "files": [
+            "settings.html",
+            "video-player.html",
+            "node_modules/**/*",
+            "package.json",
+            "main.js",
+            "preload.js",
+            "settings.js",
+            "video-player.js",
+            "style.css"
+        ],
+        "win": {
+            "target": ["nsis", "portable"],
+            "icon": "build/icon.ico"
+        },
+        "mac": {
+            "target": "dmg",
+            "icon": "build/icon.icns",
+            "category": "public.app-category.utilities"
+        },
+        "linux": {
+            "target": ["AppImage", "deb"],
+            "icon": "build/icon.png",
+            "category": "Utility"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true
+        }
+    }
+}

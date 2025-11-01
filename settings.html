@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' http://localhost:3000 http://127.0.0.1:3000 http://192.168.1.10:3000;
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline';
+    img-src 'self' data: http://localhost:3000 http://127.0.0.1:3000 http://192.168.1.10:3000;
+    connect-src 'self' http://localhost:3000 http://127.0.0.1:3000 http://192.168.1.10:3000;
+  ">
+    <title>Rotoscope Controller</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+ <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="app-title">🎬 Rotoscope Controller</h1>
+            <div class="connection-status">
+                <div id="connectionIndicator" class="status-indicator disconnected">
+                    <span class="status-dot"></span>
+                    <span id="connectionText">Disconnected</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Connection & Status Panel -->
+            <section class="panel status-connection-panel">
+                <section class="connection-panel">
+                    <h2>🔌 Connection</h2>
+                    <div class="connection-controls">
+                        <div class="input-group">
+                            <label for="portSelect">COM Port:</label>
+                            <select id="portSelect" class="select-input">
+                                <option value="">Select Port...</option>
+                            </select>
+                            <button id="refreshPorts" class="btn btn-secondary">🔄</button>
+                        </div>
+                        <div class="input-group">
+                            <label for="baudRate">Baud Rate:</label>
+                            <select id="baudRate" class="select-input">
+                                <option value="115200">115200</option>
+                                <option value="57600">57600</option>
+                                <option value="9600">9600</option>
+                            </select>
+                        </div>
+                        <div class="button-group">
+                            <button id="connectBtn" class="btn btn-primary">Connect</button>
+                            <button id="disconnectBtn" class="btn btn-secondary" disabled>Disconnect</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Status Panel -->
+                <section class="status-panel">
+                    <h2>📊 Status</h2>
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <label>Current Position:</label>
+                            <span id="currentPosition" class="status-value">---</span>
+                        </div>
+                        <div class="status-item">
+                            <label>Total Rotations:</label>
+                            <span id="totalRotations" class="status-value">---</span>
+                        </div>
+                        <div class="status-item">
+                            <label>Limit Switches:</label>
+                            <div class="limit-switches">
+                                <span id="startLimit" class="limit-indicator">START: ---</span>
+                                <span id="endLimit" class="limit-indicator">END: ---</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="status-buttons">
+                        <button id="queryPosition" class="btn btn-info">📍 Get Position</button>
+                        <button id="queryLimits" class="btn btn-info">⚠️ Check Limits</button>
+                        <button id="homeBtn" class="btn btn-warning">🏠 Home</button>
+                    </div>
+                </section>
+                <section class="panel movement-panel">
+                    <h2>🎮 Movement Control</h2>
+    
+                    <!-- Manual Movement -->
+                    <div class="movement-section">
+                        <h3>Manual Movement</h3>
+                        <div class="manual-controls">
+                            <button id="moveLeft" class="btn btn-secondary">◀ LEFT</button>
+                            <div class="step-size-control">
+                                <label for="stepSize">Step Size:</label>
+                                <select id="stepSize" class="select-input">
+                                    <option value="1">1</option>
+                                    <option value="10">10</option>
+                                    <option value="50">50</option>
+                                    <option value="100" selected>100</option>
+                                    <option value="500">500</option>
+                                    <option value="1000">1000</option>
+                                </select>
+                            </div>
+                            <button id="moveRight" class="btn btn-secondary">▶ RIGHT</button>
+                        </div>
+                    </div>
+    
+                    <!-- Emergency Stop -->
+                    <div class="emergency-controls">
+                        <button id="stopBtn" class="btn btn-danger">🛑 EMERGENCY STOP</button>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Movement Control Panel -->
+
+            <!-- Position Memory Panel -->
+            <section class="panel memory-panel">
+                <h2>💾 Position & Video Memory</h2>
+                <div class="memory-controls">
+                    <button id="listPositions" class="btn btn-info">📋 List All</button>
+                    <button id="clearAllPositions" class="btn btn-danger">🗑️ Clear All</button>
+                </div>
+
+                <div class="memory-slots">
+                    <!-- Memory slots will be generated by JavaScript -->
+                </div>
+
+                <!-- Big Add Button -->
+                <div id="addslots" title="Add New Slot">+</div>
+
+                <!-- Save and Navigate Section -->
+                <div class="save-navigation">
+                    <div class="save-info">
+                        <p>💡 Configure positions and videos for each slot, then save to start using the video player.</p>
+                    </div>
+                    <div class="save-controls">
+                        <button id="saveAllBtn" class="btn btn-success btn-large">💾 Save All Settings</button>
+                        <button id="openVideoPlayer" class="btn btn-primary btn-large">🎬 Open Video Player</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Log Panel -->
+            <section class="panel log-panel">
+                <h2>📝 Activity Log</h2>
+                <div class="system-controls">
+                    <button id="testDirection" class="btn btn-info">🧪 Test Direction</button>
+                    <button id="clearLog" class="btn btn-secondary">🧹 Clear Log</button>
+                </div>
+                <div id="activityLog" class="log-container"></div>
+            </section>
+        </main>
+    </div>
+
+
+    <script src="settings.js"></script>
+</body>
+
+</html>
